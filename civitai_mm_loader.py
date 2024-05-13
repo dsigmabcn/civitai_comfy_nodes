@@ -16,14 +16,18 @@ from .utils import short_paths_map, model_path
 
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
-CHECKPOINT_PATH = folder_paths.folder_names_and_paths["checkpoints"][0][0]
-CHECKPOINTS = folder_paths.folder_names_and_paths["checkpoints"][0]
+#CHECKPOINT_PATH = folder_paths.folder_names_and_paths["checkpoints"][0][0]
+#CHECKPOINTS = folder_paths.folder_names_and_paths["checkpoints"][0]
+# I cannot find the animatediff_models_folder with folder_names_and_paths, so I directly write the path
+CHECKPOINTS = ["/workspace/ComfyUI/models/animatediff_models"]
+CHECKPOINT_PATH = "/workspace/ComfyUI/models/animatediff_models"
+
 
 MSG_PREFIX = '\33[1m\33[34m[CivitAI] \33[0m'
 
 class CivitAI_mm_Loader:
     """
-        Implements the CivitAI Checkpoint Loader node for ComfyUI 
+        Implements the CivitAI Motion modeles AnimateDiff Loader node for ComfyUI 
     """
     def __init__(self):
         self.ckpt_loader = None
@@ -48,19 +52,24 @@ class CivitAI_mm_Loader:
             }
         }
 
-    RETURN_TYPES = ("MOTION_MODEL_ADE", "CLIP", "VAE")
+    #RETURN_TYPES = ("MOTION_MODEL_ADE")#, "CLIP", "VAE")
+    
+    RETURN_TYPES = ("*",) #Used 'any' type, so it can be connected to the AnimateDiff Loader (with string I could not do it)
     FUNCTION = "load_checkpoint"
 
     CATEGORY = "CivitAI/Loaders"
 
     def load_checkpoint(self, ckpt_air, ckpt_name, download_chunks=None, download_path=None, extra_pnginfo=None):
-
+        print("start load function")
+        print(ckpt_name)
         if extra_pnginfo:
             if not extra_pnginfo['workflow']['extra'].__contains__('ckpt_airs'):
                 extra_pnginfo['workflow']['extra'].update({'ckpt_airs': []})
 
         if not self.ckpt_loader:
             self.ckpt_loader = CheckpointLoaderSimple()
+            #self.ckpt_loader = LoadAnimateDiffModelNode()
+            #self.ckpt_loader = load_motion_module_gen2()
             
         if ckpt_name == 'none':
         
@@ -82,7 +91,7 @@ class CivitAI_mm_Loader:
                 else:
                     download_path = CHECKPOINTS[0]
             
-            civitai_model = CivitAI_Model(model_id=ckpt_id, model_version=version_id, model_types=["Motion",], save_path=download_path, model_paths=CHECKPOINTS, download_chunks=download_chunks)
+            civitai_model = CivitAI_Model(model_id=ckpt_id, model_version=version_id, model_types=["MotionModule",], save_path=download_path, model_paths=CHECKPOINTS, download_chunks=download_chunks)
                 
             if not civitai_model.download():
                return None, None, None 
@@ -106,6 +115,15 @@ class CivitAI_mm_Loader:
             
             print(f"{MSG_PREFIX}Loading checkpoint from disk: {ckpt_path}")
         
-        out = self.ckpt_loader.load_checkpoint(ckpt_name=ckpt_name)
+        #out = self.ckpt_loader.load_checkpoint(model = ckpt_name)
+        # Change to only have the output as a name, which needs to be connected to an AnimateDiff Loader
+        out = [ckpt_name]
+        
+        #print("end of function")
+        #print(ckpt_name)
+        #print(out)
 
-        return out[0], out[1], out[2], { "extra_pnginfo": extra_pnginfo }
+        return out #, out[1], out[2], { "extra_pnginfo": extra_pnginfo }
+
+
+

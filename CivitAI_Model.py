@@ -128,6 +128,8 @@ class CivitAI_Model:
 
         if response.status_code == 200:
             model_data = response.json()
+            #test
+            #print(model_data)
             
             if self.debug_response:
                 print(f"{MSG_PREFIX}API Response:")
