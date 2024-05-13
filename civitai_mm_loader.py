@@ -82,7 +82,7 @@ class CivitAI_mm_Loader:
                 else:
                     download_path = CHECKPOINTS[0]
             
-            civitai_model = CivitAI_Model(model_id=ckpt_id, model_version=version_id, model_types=["Checkpoint",], save_path=download_path, model_paths=CHECKPOINTS, download_chunks=download_chunks)
+            civitai_model = CivitAI_Model(model_id=ckpt_id, model_version=version_id, model_types=["Motion",], save_path=download_path, model_paths=CHECKPOINTS, download_chunks=download_chunks)
                 
             if not civitai_model.download():
                return None, None, None 
