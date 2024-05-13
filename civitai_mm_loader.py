@@ -62,6 +62,8 @@ class CivitAI_mm_Loader:
     CATEGORY = "CivitAI/Loaders"
 
     def load_checkpoint(self, ckpt_air, ckpt_name, download_chunks=None, download_path=None, extra_pnginfo=None):
+        print(CHECKPOINTS)
+        print(ROOT_PATH)
         print("start load function")
         print(ckpt_name)
         if extra_pnginfo:
