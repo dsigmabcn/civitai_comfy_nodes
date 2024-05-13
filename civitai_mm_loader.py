@@ -16,11 +16,13 @@ from .utils import short_paths_map, model_path
 
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
-#CHECKPOINT_PATH = folder_paths.folder_names_and_paths["checkpoints"][0][0]
-#CHECKPOINTS = folder_paths.folder_names_and_paths["checkpoints"][0]
+CHECKPOINT_PATH = folder_paths.folder_names_and_paths["checkpoints"][0][0]
+CHECKPOINTS = folder_paths.folder_names_and_paths["checkpoints"][0]
 # I cannot find the animatediff_models_folder with folder_names_and_paths, so I directly write the path
-CHECKPOINTS = ["/workspace/ComfyUI/models/animatediff_models"]
-CHECKPOINT_PATH = "/workspace/ComfyUI/models/animatediff_models"
+#CHECKPOINTS = ["/workspace/ComfyUI/models/animatediff_models"]
+#CHECKPOINT_PATH = "/workspace/ComfyUI/models/animatediff_models"
+print(CHECKPOINTS)
+print(ROOT_PATH)
 
 
 MSG_PREFIX = '\33[1m\33[34m[CivitAI] \33[0m'
