@@ -21,7 +21,7 @@ CHECKPOINTS = folder_paths.folder_names_and_paths["checkpoints"][0]
 
 MSG_PREFIX = '\33[1m\33[34m[CivitAI] \33[0m'
 
-class CivitAI_Checkpoint_Loader:
+class CivitAI_mm_Loader:
     """
         Implements the CivitAI Checkpoint Loader node for ComfyUI 
     """
