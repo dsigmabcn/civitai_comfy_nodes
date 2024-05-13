@@ -1,6 +1,6 @@
 from .civitai_lora_loader import CivitAI_LORA_Loader
 from .civitai_checkpoint_loader import CivitAI_Checkpoint_Loader
-from .civiai_mm_loader import CivitAI_mm_Loader
+from .civitai_mm_loader import CivitAI_mm_Loader
 
 NODE_CLASS_MAPPINGS = {
     "CivitAI_Lora_Loader": CivitAI_LORA_Loader,
