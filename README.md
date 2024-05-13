@@ -1,3 +1,15 @@
+# CIVIT AI Modification to add the possibility to autoupload motion modules (AnimateDiff) from Civit AI
+
+A quick and dirty new node (based in the checkpoint loader), which downloads a Motion Model (AnimateDiff) from Civit AI.
+
+The model is downloaded in Comfyui/models/animatediff_models, if it does not exist. If it exists, or a different one is selected from the list, none is downloaded.
+
+The output is just the name of the model, which needs then to be connected to the AD model loader
+![image](https://github.com/dsigmabcn/civitai_comfy_nodes/assets/92378590/2fd2fb6f-7a82-4387-a534-581784aee7ad)
+
+
+
+
 # Civitai Comfy Nodes
 
 Tired of manually downloading and moving models, LoRAs, and more to the right places?  
