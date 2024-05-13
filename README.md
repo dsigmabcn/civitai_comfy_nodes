@@ -1,4 +1,4 @@
-# CIVIT AI Modification to add the possibility to autoupload motion modules (AnimateDiff) from Civit AI
+# CIVIT AI Modification to add the possibility to autoupload motion modules (AnimateDiff) from Civit AI in OPENART.AI
 
 A quick and dirty new node (based in the checkpoint loader), which downloads a Motion Model (AnimateDiff) from Civit AI.
 
