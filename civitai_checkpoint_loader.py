@@ -40,6 +40,7 @@ class CivitAI_Checkpoint_Loader:
                 "ckpt_name": (checkpoints,),
             },
             "optional": {
+                "api_key": ("STRING", {"default": "", "multiline": False}),
                 "download_chunks": ("INT", {"default": 4, "min": 1, "max": 12, "step": 1}),
                 "download_path": (list(checkpoint_paths.keys()),),
             },
@@ -53,11 +54,10 @@ class CivitAI_Checkpoint_Loader:
 
     CATEGORY = "CivitAI/Loaders"
 
-    def load_checkpoint(self, ckpt_air, ckpt_name, download_chunks=None, download_path=None, extra_pnginfo=None):
+    def load_checkpoint(self, ckpt_air, ckpt_name, api_key=None, download_chunks=None, download_path=None, extra_pnginfo=None):
 
-        if extra_pnginfo:
-            if not extra_pnginfo['workflow']['extra'].__contains__('ckpt_airs'):
-                extra_pnginfo['workflow']['extra'].update({'ckpt_airs': []})
+        if extra_pnginfo and 'workflow' in extra_pnginfo:
+            extra_pnginfo['workflow']['extra'].setdefault('ckpt_airs', [])
 
         if not self.ckpt_loader:
             self.ckpt_loader = CheckpointLoaderSimple()
@@ -82,13 +82,13 @@ class CivitAI_Checkpoint_Loader:
                 else:
                     download_path = CHECKPOINTS[0]
             
-            civitai_model = CivitAI_Model(model_id=ckpt_id, model_version=version_id, model_types=["Checkpoint",], save_path=download_path, model_paths=CHECKPOINTS, download_chunks=download_chunks)
+            civitai_model = CivitAI_Model(model_id=ckpt_id, model_version=version_id, model_types=["Checkpoint",], token=api_key, save_path=download_path, model_paths=CHECKPOINTS, download_chunks=download_chunks)
                 
             if not civitai_model.download():
                return None, None, None 
                
             ckpt_name = civitai_model.name
-            if extra_pnginfo:
+            if extra_pnginfo and 'workflow' in extra_pnginfo:
                 air = f'{civitai_model.model_id}@{civitai_model.version}'
                 if air not in extra_pnginfo['workflow']['extra']['ckpt_airs']: 
                     extra_pnginfo['workflow']['extra']['ckpt_airs'].append(air)
@@ -99,7 +99,7 @@ class CivitAI_Checkpoint_Loader:
 
             model_id, version_id, details = CivitAI_Model.sha256_lookup(ckpt_path)
             
-            if model_id and version_id and extra_pnginfo:
+            if model_id and version_id and extra_pnginfo and 'workflow' in extra_pnginfo:
                 air = f'{model_id}@{version_id}'
                 if air not in extra_pnginfo['workflow']['extra']['ckpt_airs']: 
                     extra_pnginfo['workflow']['extra']['ckpt_airs'].append(air)
@@ -107,5 +107,5 @@ class CivitAI_Checkpoint_Loader:
             print(f"{MSG_PREFIX}Loading checkpoint from disk: {ckpt_path}")
         
         out = self.ckpt_loader.load_checkpoint(ckpt_name=ckpt_name)
-
+        
         return out[0], out[1], out[2], { "extra_pnginfo": extra_pnginfo }
